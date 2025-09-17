@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIA Missions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a;
+            color: #d4d4d4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        .container {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            text-align: left;
+            flex-direction: row;
+        }
+        
+        .main-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .nav-link {
+            padding: 0.5rem 1rem;
+            color: #d4d4d4;
+            text-decoration: none;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 1rem;
+        }
+        
+        .logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin: 0;
+            letter-spacing: 0.05em;
+        }
+
+        p {
+            font-size: 0.75rem;
+            font-weight: 400;
+            line-height: 1.6;
+            color: #a0a0a0;
+            margin-top: 0.25rem;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-300">
+
+    <!-- Navigation -->
+    <nav class="absolute top-0 right-0 p-4">
+        <a class="nav-link" onclick="showPage('mission1')">Mission 1</a>
+        <a class="nav-link" onclick="showPage('mission2')">Mission 2</a>
+        <a class="nav-link" onclick="showPage('mission3')">Mission 3</a>
+    </nav>
+
+    <div class="container">
+        <div class="logo">
+            <!-- Simplified CIA Seal SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <!-- Outer circle -->
+                <circle cx="50" cy="50" r="48" stroke="#ffffff" stroke-width="2" fill="transparent"/>
+                <!-- Compass Rose with 16 points -->
+                <polygon points="50,5 56,23 75,23 59,33 65,50 56,67 75,77 56,77 50,95 44,77 25,77 41,67 35,50 44,33 25,23 44,23" fill="#ffffff"/>
+                <!-- Eagle head -->
+                <path d="M50,42 c10,-2 15,-12 12,-18 c-3,-6 -12,-5 -22,-2 c-10,3 -15,12 -12,18 c3,6 12,5 22,2 z" fill="#1a1a1a" stroke="#ffffff" stroke-width="0.5" />
+                <!-- Shield shape -->
+                <path d="M50,55 L75,50 L75,75 L50,85 L25,75 L25,50 Z" fill="#ffffff" stroke="#ffffff" stroke-width="0.5"/>
+            </svg>
+        </div>
+        <div class="header-content">
+            <h1>
+                CIA
+            </h1>
+            <p>
+                We are the Nation's first line of defense.
+            </p>
+        </div>
+    </div>
+
+    <!-- Page Content -->
+    <div id="mission1" class="page active">
+        <div class="main-content">
+             <style>
+                @import url("https://fonts.googleapis.com/css2?family=Space+Mono&display=swap");
+
+                body::before {
+                    content: '';
+                    background-color: #000;
+                    background-image: url("https://assets.codepen.io/37111/cat-eyes.jpg");
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    position: absolute;
+                    inset: 0;
+                    filter: brightness(50%);
+                    z-index: 0;
+                }
+
+                .text-block {
+                    margin: 15vw;
+                    max-width: 800px;
+                    font-family: "Space Mono", monospace;
+                    font-weight: 400;
+                    font-style: normal;
+                    font-size: clamp(16px, 4vw, 40px);
+                    color: #fff;
+                    text-shadow: 1px 1px 2px #000;
+                    position: relative;
+                    z-index: 10;
+                }
+            </style>
+            <div class="text-block">
+                <p>
+                    Macavity's a Mystery Cat: he's called the Hidden Paw— For he's the master criminal who can defy the Law. He's the bafflement of Scotland Yard, the Flying Squad's despair: For when they reach the scene of crime—Macavity's not there!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="mission2" class="page">
+        <div class="main-content">
+            <h2 class="text-4xl font-semibold mb-4 text-white">Mission 2: Covert Action</h2>
+            <p class="text-lg max-w-2xl">
+                When directed by the President, the CIA conducts covert action to influence political, economic, or military conditions abroad. These activities are carried out in a manner that protects the identities of those involved and the secrets of the operation.
+            </p>
+        </div>
+    </div>
+
+    <div id="mission3" class="page">
+        <div class="main-content">
+            <h2 class="text-4xl font-semibold mb-4 text-white">Mission 3: Global Partnerships</h2>
+            <p class="text-lg max-w-2xl">
+                The CIA works in close collaboration with our foreign intelligence and security services to combat global threats, including terrorism, narcotics trafficking, and weapons proliferation. These international partnerships are critical to advancing our shared national security objectives.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        gsap.registerPlugin(TextPlugin);
+
+        let textRevealRadius = 100;
+        const textRevealPercent = 0.17; 
+
+        const upperAndLowerCase = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        const getRandomLetter = () =>
+            upperAndLowerCase[Math.round(upperAndLowerCase.length * Math.random())];
+
+        let pageX = 0;
+        let pageY = 0;
+        let scrollY = window.pageYOffset;
+        let scrollX = window.pageXOffset;
+
+        let charData = [];
+
+        function handleResize() {
+            textRevealRadius = window.innerWidth * textRevealPercent;
+            updateCharData();
+        }
+
+        function splitTextIntoChars() {
+            const pElement = document.querySelector('.page#mission1 p');
+            if (pElement) {
+                pElement.innerHTML = pElement.textContent.split('').map(char => {
+                    return `<span>${char === ' ' ? '&nbsp;' : char}</span>`;
+                }).join('');
+            }
+        }
+
+        function updateCharData() {
+            const mission1Page = document.getElementById('mission1');
+            if (mission1Page.classList.contains('active')) {
+                charData = Array.from(document.querySelectorAll('.page#mission1 p span')).map(char => {
+                    const bounds = char.getBoundingClientRect();
+                    return {
+                        el: char,
+                        pageY: bounds.top + scrollY + bounds.height / 2,
+                        pageX: bounds.left + window.pageXOffset + bounds.width / 2,
+                        isVisible: false,
+                        orig: char.textContent
+                    };
+                });
+            }
+        }
+
+        function updateText(e) {
+            const mission1Page = document.getElementById('mission1');
+            if (!mission1Page.classList.contains('active') || charData.length === 0) {
+                return;
+            }
+
+            if ("pageY" in e) {
+                pageX = e.pageX;
+                pageY = e.pageY;
+            } else { 
+                let scrollYDif = window.pageYOffset - scrollY;
+                let scrollXDif = window.pageXOffset - scrollX;
+                scrollY += scrollYDif;
+                scrollX += scrollXDif;
+                pageY += scrollYDif;
+                pageX += scrollXDif;
+            }
+            
+            charData.forEach((data) => {
+                const dx = pageX - data.pageX;
+                const dy = pageY - data.pageY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const isVisible = dist < textRevealRadius;
+                
+                if (isVisible !== data.isVisible) {
+                    data.isVisible = isVisible;
+                    gsap.to(data.el, {
+                        overwrite: true,
+                        duration: gsap.utils.clamp(0.5, 3, dist / textRevealRadius),
+                        scrambleText: {
+                            text: isVisible ? data.orig : getRandomLetter(),
+                            chars: 'upperAndLowerCase'
+                        }
+                    });
+                }
+            });
+        }
+        
+        function initTextReveal() {
+            splitTextIntoChars();
+            updateCharData();
+            window.addEventListener('resize', handleResize);
+            window.addEventListener('pointermove', updateText);
+            window.addEventListener('scroll', updateText);
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            if (pageId === 'mission1') {
+                initTextReveal();
+            } else {
+                window.removeEventListener('resize', handleResize);
+                window.removeEventListener('pointermove', updateText);
+                window.removeEventListener('scroll', updateText);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage('mission1');
+        });
+    </script>
+</body>
+</html>
