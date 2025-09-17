@@ -96,7 +96,7 @@
 
     <!-- Navigation -->
     <nav class="absolute top-0 right-0 p-4">
-        <a class="nav-link" onclick="showPage('mission1')">Mission 1</a>
+        <a class="nav-link" onclick="showPage('mission1')">Question 1</a>
         <a class="nav-link" onclick="showPage('mission2')">Mission 2</a>
         <a class="nav-link" onclick="showPage('mission3')">Mission 3</a>
     </nav>
@@ -131,36 +131,73 @@
              <style>
                 @import url("https://fonts.googleapis.com/css2?family=Space+Mono&display=swap");
 
+                html,
+                body {
+                  margin: 0;
+                  padding: 0;
+                }
+
                 body::before {
                     content: '';
                     background-color: #000;
                     background-image: url("https://assets.codepen.io/37111/cat-eyes.jpg");
-                    background-size: cover;
+                    background-size: contain;
                     background-position: center;
                     background-repeat: no-repeat;
                     position: absolute;
                     inset: 0;
                     filter: brightness(50%);
-                    z-index: 0;
+                    pointer-events: none; /* don't block pointer tracking */
                 }
 
                 .text-block {
-                    margin: 15vw;
+                    margin: 10vh auto; /* center horizontally */
+                    padding: 0 5vw;   /* side padding for small screens */
                     max-width: 800px;
                     font-family: "Space Mono", monospace;
                     font-weight: 400;
                     font-style: normal;
-                    font-size: clamp(16px, 4vw, 40px);
+                    font-size: clamp(16px, 3.2vw, 30px); /* smaller to avoid oversized scramble */
                     color: #fff;
                     text-shadow: 1px 1px 2px #000;
                     position: relative;
                     z-index: 10;
+                    text-align: center;         /* center the text */
+                    overflow-wrap: normal;      /* keep horizontal flow */
+                    word-break: normal;         /* avoid per-char vertical stacking */
                 }
+                /* Ensure paragraph uses the container font size instead of global small p size */
+                #mission1 .text-block p { font-size: inherit; line-height: 1.5; margin: 0.4em 0; }
+                #mission1 .text-block h3 { margin: 0 0 0.4em; font-weight: 700; }
+                #mission1 .text-block ul, 
+                #mission1 .text-block ol { 
+                    text-align: left;           /* lists read better left-aligned */
+                    margin: 0.5em auto; 
+                    padding-left: 1.2em; 
+                    max-width: 36ch;           /* avoid overly long lines */
+                }
+                #mission1 .text-block li { margin: 0.2em 0; }
             </style>
             <div class="text-block">
-                <p>
-                    Macavity's a Mystery Cat: he's called the Hidden Paw— For he's the master criminal who can defy the Law. He's the bafflement of Scotland Yard, the Flying Squad's despair: For when they reach the scene of crime—Macavity's not there!
-                </p>
+                <div id="riddle">
+                    <h3>The Riddle of Six</h3>
+                    <p>A voice hides a message.<br/>The key lies only in these fragments of time:</p>
+                    <ul>
+                        <li><code>17.96 → 18.95</code> (harvest 3)</li>
+                        <li><code>1.23.95 → 1.24.5</code> (harvest 1)</li>
+                        <li><code>01.00.99 → 01.01.30</code> (harvest 1)</li>
+                        <li><code>0.51.09 → 0.51.75</code> (harvest 1)</li>
+                    </ul>
+                    <h3>Instructions, whispered:</h3>
+                    <ol>
+                        <li>Catch the sounds that live between the marks.</li>
+                        <li>Strip away all space and clutter.</li>
+                        <li>Gather only the number of letters demanded.</li>
+                        <li>Bind them in the given order.</li>
+                        <li>Break the chain into six clear words.</li>
+                    </ol>
+                    <p><strong>Answer sought:</strong> A single <strong>six-word sentence</strong> that reveals itself only to those who listen carefully.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -183,117 +220,128 @@
         </div>
     </div>
 
-    <script>
-        gsap.registerPlugin(TextPlugin);
+        <script>
+                // Lightweight scramble effect without GSAP bonus plugins (SplitText/ScrambleText)
+                const textRevealPercent = 0.17; // portion of viewport width used as reveal radius
+                let textRevealRadius = 100;
 
-        let textRevealRadius = 100;
-        const textRevealPercent = 0.17; 
+                const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+                const getRandomLetter = () => letters[Math.floor(Math.random() * letters.length)];
 
-        const upperAndLowerCase = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-        const getRandomLetter = () =>
-            upperAndLowerCase[Math.round(upperAndLowerCase.length * Math.random())];
+                let pageX = 0, pageY = 0;
+                let scrollY = window.pageYOffset, scrollX = window.pageXOffset;
 
-        let pageX = 0;
-        let pageY = 0;
-        let scrollY = window.pageYOffset;
-        let scrollX = window.pageXOffset;
+                let charSpans = [];
+                let charData = [];
 
-        let charData = [];
-
-        function handleResize() {
-            textRevealRadius = window.innerWidth * textRevealPercent;
-            updateCharData();
-        }
-
-        function splitTextIntoChars() {
-            const pElement = document.querySelector('.page#mission1 p');
-            if (pElement) {
-                pElement.innerHTML = pElement.textContent.split('').map(char => {
-                    return `<span>${char === ' ' ? '&nbsp;' : char}</span>`;
-                }).join('');
-            }
-        }
-
-        function updateCharData() {
-            const mission1Page = document.getElementById('mission1');
-            if (mission1Page.classList.contains('active')) {
-                charData = Array.from(document.querySelectorAll('.page#mission1 p span')).map(char => {
-                    const bounds = char.getBoundingClientRect();
-                    return {
-                        el: char,
-                        pageY: bounds.top + scrollY + bounds.height / 2,
-                        pageX: bounds.left + window.pageXOffset + bounds.width / 2,
-                        isVisible: false,
-                        orig: char.textContent
-                    };
-                });
-            }
-        }
-
-        function updateText(e) {
-            const mission1Page = document.getElementById('mission1');
-            if (!mission1Page.classList.contains('active') || charData.length === 0) {
-                return;
-            }
-
-            if ("pageY" in e) {
-                pageX = e.pageX;
-                pageY = e.pageY;
-            } else { 
-                let scrollYDif = window.pageYOffset - scrollY;
-                let scrollXDif = window.pageXOffset - scrollX;
-                scrollY += scrollYDif;
-                scrollX += scrollXDif;
-                pageY += scrollYDif;
-                pageX += scrollXDif;
-            }
-            
-            charData.forEach((data) => {
-                const dx = pageX - data.pageX;
-                const dy = pageY - data.pageY;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                const isVisible = dist < textRevealRadius;
-                
-                if (isVisible !== data.isVisible) {
-                    data.isVisible = isVisible;
-                    gsap.to(data.el, {
-                        overwrite: true,
-                        duration: gsap.utils.clamp(0.5, 3, dist / textRevealRadius),
-                        scrambleText: {
-                            text: isVisible ? data.orig : getRandomLetter(),
-                            chars: 'upperAndLowerCase'
+                function splitTextIntoChars() {
+                        const container = document.querySelector('#mission1 .text-block #riddle');
+                        if (!container) return;
+                        if (container.dataset.split === 'true') {
+                                charSpans = Array.from(container.querySelectorAll('span[data-split="1"]'));
+                                return;
                         }
-                    });
+                        // Walk the DOM and split only text nodes into span-wrapped characters
+                        const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
+                            acceptNode(node) {
+                                // ignore empty/whitespace-only nodes
+                                if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                                return NodeFilter.FILTER_ACCEPT;
+                            }
+                        });
+                        const textNodes = [];
+                        while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+                        textNodes.forEach(node => {
+                            const parent = node.parentNode;
+                            const frag = document.createDocumentFragment();
+                            for (const ch of node.nodeValue) {
+                                const span = document.createElement('span');
+                                span.textContent = ch; // keep normal spaces for wrapping
+                                span.dataset.orig = ch;
+                                span.setAttribute('data-split', '1');
+                                frag.appendChild(span);
+                            }
+                            parent.replaceChild(frag, node);
+                        });
+                        container.dataset.split = 'true';
+                        charSpans = Array.from(container.querySelectorAll('span[data-split="1"]'));
                 }
-            });
-        }
-        
-        function initTextReveal() {
-            splitTextIntoChars();
-            updateCharData();
-            window.addEventListener('resize', handleResize);
-            window.addEventListener('pointermove', updateText);
-            window.addEventListener('scroll', updateText);
-        }
 
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
-            
-            if (pageId === 'mission1') {
-                initTextReveal();
-            } else {
-                window.removeEventListener('resize', handleResize);
-                window.removeEventListener('pointermove', updateText);
-                window.removeEventListener('scroll', updateText);
-            }
-        }
+                function updateCharData() {
+                        scrollY = window.pageYOffset;
+                        scrollX = window.pageXOffset;
+                        charData = charSpans.map(el => {
+                                const b = el.getBoundingClientRect();
+                                return {
+                                        el,
+                                        pageY: b.top + scrollY + b.height / 2,
+                                        pageX: b.left + scrollX + b.width / 2,
+                                        isVisible: false,
+                                        orig: el.dataset.orig || el.textContent
+                                };
+                        });
+                }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            showPage('mission1');
-        });
-    </script>
+                function handleResize() {
+                        textRevealRadius = window.innerWidth * textRevealPercent;
+                        updateCharData();
+                }
+
+                function updateOnInput(e) {
+                        const mission1Active = document.getElementById('mission1')?.classList.contains('active');
+                        if (!mission1Active || !charData.length) return;
+
+                        if ("pageY" in e) {
+                                pageX = e.pageX;
+                                pageY = e.pageY;
+                        } else {
+                                // update based on scroll delta
+                                const dy = window.pageYOffset - scrollY;
+                                const dx = window.pageXOffset - scrollX;
+                                scrollY += dy;
+                                scrollX += dx;
+                                pageY += dy;
+                                pageX += dx;
+                        }
+
+                        for (const d of charData) {
+                                const dx = pageX - d.pageX;
+                                const dy = pageY - d.pageY;
+                                const dist = Math.hypot(dx, dy);
+                                const visible = dist < textRevealRadius;
+                                if (visible !== d.isVisible || !visible) {
+                                    d.isVisible = visible;
+                                    d.el.textContent = visible ? d.orig : getRandomLetter();
+                                }
+                        }
+                }
+
+                function initMission1() {
+                        splitTextIntoChars();
+                        handleResize();
+                        window.addEventListener('resize', handleResize);
+                        window.addEventListener('pointermove', updateOnInput, { passive: true });
+                        window.addEventListener('scroll', updateOnInput, { passive: true });
+                        updateOnInput({ pageX: 0, pageY: 0 });
+                }
+
+                function teardown() {
+                        window.removeEventListener('resize', handleResize);
+                        window.removeEventListener('pointermove', updateOnInput);
+                        window.removeEventListener('scroll', updateOnInput);
+                }
+
+                function showPage(pageId) {
+                        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+                        document.getElementById(pageId)?.classList.add('active');
+                        teardown();
+                        if (pageId === 'mission1') initMission1();
+                }
+
+                document.addEventListener('DOMContentLoaded', () => {
+                        showPage('mission1');
+                });
+        </script>
 </body>
 </html>
