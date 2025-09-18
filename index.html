@@ -102,6 +102,7 @@
         <a class="nav-link" onclick="showPage('mission2')">Question 4</a>
         <a class="nav-link" onclick="showPage('mission5')">Question 5</a>
         <a class="nav-link" onclick="showPage('mission6')">Question 6</a>
+        <a class="nav-link" onclick="showPage('mission7')">Question 7</a>
     </nav>
 
     <div class="container">
@@ -330,6 +331,47 @@
                 </div>
             </div>
 
+                        <!-- Question 7: time travel instruction + SHA-256 hash -->
+                        <div id="mission7" class="page">
+                    <div class="main-content">
+                                <h3 class="text-2xl md:text-3xl font-semibold text-white mb-6">Question 7</h3>
+
+                        <div class="p-[1px] rounded-2xl bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] max-w-3xl mx-auto shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_8px_30px_-10px_rgba(0,0,0,0.7)]">
+                            <div class="rounded-2xl bg-neutral-950 border border-neutral-900/70 p-6 md:p-8">
+                                <div class="space-y-4 text-gray-300">
+                                    <p class="text-base md:text-lg">
+                                        Travel back to
+                                        <span class="font-semibold text-white">7 September 2004 10:45:29</span>
+                                        and, according to
+                                        <a href="https://www.worldometers.info/" target="_blank" rel="noopener" class="text-blue-400 hover:text-blue-300 underline underline-offset-2">worldometers</a>,
+                                        find <span class="italic">U.S. spending on perfume ($U.S. millions) this year</span>.
+                                    </p>
+                                    <p class="text-sm text-gray-400">Write down just the number (digits only, remove commas/spaces). Now compute its SHA-256 yourself.</p>
+
+                                    <div class="space-y-3 text-sm text-gray-400/90">
+                                        <p class="text-gray-300">Compute SHA-256 of the number as plain text (no newline):</p>
+                                        <div class="grid gap-3 md:grid-cols-2">
+                                            <div class="rounded border border-neutral-800 bg-neutral-900 p-3">
+                                                <p class="mb-1 text-gray-400">Linux / macOS</p>
+                                                <pre class="text-xs text-gray-300 whitespace-pre-wrap"><code>echo -n 4821 | shasum -a 256</code></pre>
+                                            </div>
+                                            <div class="rounded border border-neutral-800 bg-neutral-900 p-3">
+                                                <p class="mb-1 text-gray-400">Python</p>
+                                                <pre class="text-[11px] text-gray-300 whitespace-pre-wrap"><code>import hashlib
+
+        v = "4821"  # replace with your number (digits only)
+        digest = hashlib.sha256(v.encode("utf-8")).hexdigest()
+        print(digest)</code></pre>
+                                            </div>
+                                        </div>
+                                        <p class="text-xs text-gray-500">Replace 4821 with the digits you found. Any SHA-256 tool is fine.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <script>
                 // Intentionally strict: this handler always discourages normal answers.
                 (function(){
@@ -523,5 +565,7 @@
                         showPage('mission1');
                 });
         </script>
+
+        
 </body>
 </html>
