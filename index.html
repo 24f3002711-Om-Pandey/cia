@@ -14,12 +14,14 @@
             background-color: #1a1a1a;
             color: #d4d4d4;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start; /* start at top to avoid clipping */
             align-items: center;
-            height: 100vh;
+            min-height: 100vh; /* was height: 100vh; allow content to grow */
             text-align: center;
-            overflow: hidden;
+            overflow-x: hidden; /* avoid sideways overflow */
+            overflow-y: auto;   /* allow vertical scroll so text isn't cut off */
             flex-direction: column;
+            padding: 6rem 0 4rem; /* breathing room top/bottom */
         }
 
         .container {
@@ -96,9 +98,10 @@
 
     <!-- Navigation -->
     <nav class="absolute top-0 right-0 p-4">
-        <a class="nav-link" onclick="showPage('mission1')">Question 1</a>
-        <a class="nav-link" onclick="showPage('mission2')">Mission 2</a>
-        <a class="nav-link" onclick="showPage('mission3')">Mission 3</a>
+        <a class="nav-link" onclick="showPage('mission1')">Question 3</a>
+        <a class="nav-link" onclick="showPage('mission2')">Question 4</a>
+        <a class="nav-link" onclick="showPage('mission5')">Question 5</a>
+        <a class="nav-link" onclick="showPage('mission6')">Question 6</a>
     </nav>
 
     <div class="container">
@@ -131,11 +134,10 @@
              <style>
                 @import url("https://fonts.googleapis.com/css2?family=Space+Mono&display=swap");
 
-                html,
-                body {
-                  margin: 0;
-                  padding: 0;
-                }
+                                html,
+                                body {
+                                    margin: 0; /* keep default padding from global styles */
+                                }
 
                 body::before {
                     content: '';
@@ -144,20 +146,21 @@
                     background-size: contain;
                     background-position: center;
                     background-repeat: no-repeat;
-                    position: absolute;
+                    position: fixed; /* stay fixed while content scrolls */
                     inset: 0;
                     filter: brightness(50%);
                     pointer-events: none; /* don't block pointer tracking */
+                    z-index: 0;
                 }
 
                 .text-block {
                     margin: 10vh auto; /* center horizontally */
-                    padding: 0 5vw;   /* side padding for small screens */
+                    padding: 0 8vw;   /* increased side padding for scramble text */
                     max-width: 800px;
                     font-family: "Space Mono", monospace;
                     font-weight: 400;
                     font-style: normal;
-                    font-size: clamp(16px, 3.2vw, 30px); /* smaller to avoid oversized scramble */
+                    font-size: clamp(15px, 2.8vw, 28px); /* reduced size for better fit */
                     color: #fff;
                     text-shadow: 1px 1px 2px #000;
                     position: relative;
@@ -169,6 +172,9 @@
                 /* Ensure paragraph uses the container font size instead of global small p size */
                 #mission1 .text-block p { font-size: inherit; line-height: 1.5; margin: 0.4em 0; }
                 #mission1 .text-block h3 { margin: 0 0 0.4em; font-weight: 700; }
+                #mission1 .text-block h3 a { color: #60a5fa; text-decoration: underline; text-underline-offset: 2px; transition: color 0.2s ease; }
+                #mission1 .text-block h3 a:hover { color: #93c5fd; }
+                #mission1 .text-block h3 a:visited { color: #60a5fa; }
                 #mission1 .text-block ul, 
                 #mission1 .text-block ol { 
                     text-align: left;           /* lists read better left-aligned */
@@ -180,7 +186,7 @@
             </style>
             <div class="text-block">
                 <div id="riddle">
-                    <h3>The Riddle of Six</h3>
+                    <h3><a href="https://drive.google.com/file/d/1Fd0ApzRxoWYWa8tPZn1e5Ff_JY5V5LM1/view" target="_blank" rel="noopener noreferrer">The Riddle of Six</a></h3>
                     <p>A voice hides a message.<br/>The key lies only in these fragments of time:</p>
                     <ul>
                         <li><code>17.96 → 18.95</code> (harvest 3)</li>
@@ -204,21 +210,162 @@
 
     <div id="mission2" class="page">
         <div class="main-content">
-            <h2 class="text-4xl font-semibold mb-4 text-white">Mission 2: Covert Action</h2>
-            <p class="text-lg max-w-2xl">
-                When directed by the President, the CIA conducts covert action to influence political, economic, or military conditions abroad. These activities are carried out in a manner that protects the identities of those involved and the secrets of the operation.
-            </p>
+            <!-- Question 4 -->
+            <div class="mt-10">
+                    <h3 class="text-2xl md:text-3xl font-semibold text-white mb-2">Question 4</h3>
+                    <p class="text-base md:text-lg mb-6">You are tasked with finding the nearest McDonald's and its coordinates.</p>
+                    <div class="space-y-6">
+                        <!-- Large primary image -->
+                        <img src="image.png" alt="Primary reference" class="w-full max-w-3xl mx-auto rounded shadow object-contain max-h-[420px]" />
+
+                        <!-- First row of smaller images (3 across) -->
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 place-items-center">
+                            <img src="image2.png" alt="Reference 2" class="w-full max-h-56 object-contain rounded shadow" />
+                            <img src="image3.png" alt="Reference 3" class="w-full max-h-56 object-contain rounded shadow" />
+                            <img src="image4.png" alt="Reference 4" class="w-full max-h-56 object-contain rounded shadow" />
+                        </div>
+
+                        <!-- Second row of smaller images (2 centered) -->
+                        <div class="grid grid-cols-2 gap-4 place-items-center md:max-w-[60%] mx-auto">
+                            <img src="image5.png" alt="Reference 5" class="w-full max-h-56 object-contain rounded shadow" />
+                            <img src="image6.png" alt="Reference 6" class="w-full max-h-56 object-contain rounded shadow" />
+                        </div>
+                    </div>
+            </div>
         </div>
     </div>
 
-    <div id="mission3" class="page">
-        <div class="main-content">
-            <h2 class="text-4xl font-semibold mb-4 text-white">Mission 3: Global Partnerships</h2>
-            <p class="text-lg max-w-2xl">
-                The CIA works in close collaboration with our foreign intelligence and security services to combat global threats, including terrorism, narcotics trafficking, and weapons proliferation. These international partnerships are critical to advancing our shared national security objectives.
-            </p>
+    
+
+                <!-- Question 5: simple math + validation-bypass challenge -->
+                <div id="mission5" class="page">
+            <div class="main-content">
+                        <h3 class="text-2xl md:text-3xl font-semibold text-white mb-6">Question 5</h3>
+
+                <!-- Blurred container (solver must unblur via DOM manipulation) -->
+            <div id="blurred-box-5" class="p-6 rounded-xl bg-neutral-950 border border-neutral-800/70 shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_8px_30px_-10px_rgba(0,0,0,0.7)] max-w-2xl mx-auto"
+                         style="filter: blur(8px); transition: filter 200ms ease;">
+                    <p class="mb-4">
+                        hint: Bypass the frontend validation to reveal the hidden code.
+                    </p>
+
+                                <form id="math-form-5" class="space-y-4" autocomplete="off">
+                                    <label for="q5" class="block text-sm font-medium">What is 2 + 2?</label>
+
+                        <!-- Strict frontend validation: only '4' matches the pattern.
+                                 The JS intentionally rejects all normal submissions to force a bypass. -->
+                     <input id="q5" name="q5" type="text"
+                                     class="px-3 py-2 rounded bg-gray-900 border border-gray-700 text-white w-full"
+                                     placeholder="Enter your answer"
+                                     required pattern="^4$" />
+
+                        <div class="flex gap-2">
+                            <button type="submit" class="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 rounded text-white">
+                                Submit
+
+                        </div>
+
+                        <p id="feedback" class="mt-2 text-sm text-red-400" aria-live="polite"></p>
+
+                        <!-- Hidden reward revealed only after a bypass (see script) -->
+                                    <div id="q5-reward" class="mt-4 hidden bg-neutral-900 border border-neutral-800 p-4 rounded">
+                            <p class="font-mono text-green-400">
+                                Answer: <code>DOM_PWNED_1337</code>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
+
+                    <!-- Question 6: vague hint + download icon -->
+                    <div id="mission6" class="page">
+                <div class="main-content">
+                            <h3 class="text-2xl md:text-3xl font-semibold text-white mb-6">Question 6</h3>
+
+                    <style>
+                        /* Vague, low-contrast aesthetic just for Question 6 */
+                        #mission6 .vague-box {
+                            position: relative;
+                            overflow: hidden;
+                        }
+                        #mission6 .vague-box::before {
+                            content: "";
+                            position: absolute;
+                            inset: 0;
+                            background:
+                              repeating-linear-gradient(
+                                to bottom,
+                                rgba(255,255,255,0.03) 0px,
+                                rgba(255,255,255,0.03) 1px,
+                                transparent 2px,
+                                transparent 4px
+                              ); /* subtle scanlines */
+                            opacity: 0.6;
+                            pointer-events: none;
+                        }
+                    </style>
+
+                    <div class="vague-box p-6 rounded-xl bg-neutral-950 border border-neutral-900/70 shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_8px_30px_-10px_rgba(0,0,0,0.6)] max-w-2xl mx-auto">
+                        <div class="font-mono text-gray-300/80 select-none">
+                            <div class="whitespace-pre leading-relaxed">
+    Find Kaggle RockYou2024.txt
+    ===============
+    hint : G.txt
+                            </div>
+                            <div class="mt-6">
+                                         <a href="https://drive.usercontent.google.com/download?id=1rNG8_y8_jO92xRR9UCny20YXlInYXrO2&export=download&authuser=0" target="_blank" rel="noopener noreferrer"
+                                             class="inline-flex items-center gap-2 px-3 py-2 rounded border border-neutral-800 text-gray-300 hover:text-white hover:border-neutral-700 transition-colors"
+                                             aria-label="Download file (opens in new tab)">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M12 3v10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                                        <path d="M8.5 10.5L12 13.5L15.5 10.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M4 15.5v2a2.5 2.5 0 0 0 2.5 2.5h11A2.5 2.5 0 0 0 20 17.5v-2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                                    </svg>
+                                    <span>Download</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <script>
+                // Intentionally strict: this handler always discourages normal answers.
+                (function(){
+                    const form = document.getElementById('math-form-5');
+                    const hintBtn = document.getElementById('inspect-hint-5');
+                    if (form) {
+                        form.addEventListener('submit', function (e) {
+                            e.preventDefault();
+                            const inputEl = document.getElementById('q5');
+                            const val = (inputEl?.value || '').trim();
+                            const feedback = document.getElementById('feedback');
+
+                            // Always complain regardless of correctness.
+                            if (feedback) feedback.textContent = "Nah get better at maths.";
+
+                            // Reward only if explicit override token present.
+                            // The intended bypass is to remove the 'pattern' attribute or otherwise
+                            // manipulate the DOM so the attacker can set input value to "OVERRIDE"
+                            // or directly toggle the reward visibility.
+                            if (val === 'OVERRIDE' || (inputEl && inputEl.dataset.override === '1')) {
+                                document.getElementById('q5-reward')?.classList.remove('hidden');
+                                if (feedback) feedback.textContent = "Code revealed.";
+                            } else {
+                                // Ensure reward stays hidden
+                                document.getElementById('q5-reward')?.classList.add('hidden');
+                            }
+                        });
+                    }
+                    if (hintBtn) {
+                        hintBtn.addEventListener('click', function () {
+                            const feedback = document.getElementById('feedback');
+                            if (feedback) feedback.textContent = "Open DevTools / Console and examine #blurred-box-5 and #q5 (no cheat provided).";
+                        });
+                    }
+                })();
+            </script>
 
         <script>
                 // Lightweight scramble effect without GSAP bonus plugins (SplitText/ScrambleText)
@@ -233,6 +380,8 @@
 
                 let charSpans = [];
                 let charData = [];
+                let layoutObserver = null;
+                let lastMeasureTs = 0;
 
                 function splitTextIntoChars() {
                         const container = document.querySelector('#mission1 .text-block #riddle');
@@ -268,7 +417,7 @@
                         charSpans = Array.from(container.querySelectorAll('span[data-split="1"]'));
                 }
 
-                function updateCharData() {
+        function updateCharData() {
                         scrollY = window.pageYOffset;
                         scrollX = window.pageXOffset;
                         charData = charSpans.map(el => {
@@ -281,6 +430,7 @@
                                         orig: el.dataset.orig || el.textContent
                                 };
                         });
+            lastMeasureTs = performance.now();
                 }
 
                 function handleResize() {
@@ -288,7 +438,7 @@
                         updateCharData();
                 }
 
-                function updateOnInput(e) {
+        function updateOnInput(e) {
                         const mission1Active = document.getElementById('mission1')?.classList.contains('active');
                         if (!mission1Active || !charData.length) return;
 
@@ -305,6 +455,11 @@
                                 pageX += dx;
                         }
 
+                        // Periodically refresh measurements in case layout shifted
+                        if (performance.now() - lastMeasureTs > 250) {
+                            updateCharData();
+                        }
+
                         for (const d of charData) {
                                 const dx = pageX - d.pageX;
                                 const dy = pageY - d.pageY;
@@ -312,7 +467,16 @@
                                 const visible = dist < textRevealRadius;
                                 if (visible !== d.isVisible || !visible) {
                                     d.isVisible = visible;
-                                    d.el.textContent = visible ? d.orig : getRandomLetter();
+                                    if (visible) {
+                                        d.el.textContent = d.orig;
+                                    } else {
+                                        // Keep whitespace and control chars intact; only scramble printable non-space
+                                        if (/\s/.test(d.orig)) {
+                                            d.el.textContent = d.orig;
+                                        } else {
+                                            d.el.textContent = getRandomLetter();
+                                        }
+                                    }
                                 }
                         }
                 }
@@ -320,23 +484,39 @@
                 function initMission1() {
                         splitTextIntoChars();
                         handleResize();
+                        // Observe layout changes inside the riddle to keep measurements fresh
+                        const container = document.querySelector('#mission1 .text-block #riddle');
+                        if (window.ResizeObserver && container) {
+                            layoutObserver = new ResizeObserver(() => {
+                                updateCharData();
+                            });
+                            layoutObserver.observe(container);
+                        }
+                        // Recompute when fonts have finished loading (affects layout)
+                        if (document.fonts && document.fonts.ready) {
+                            document.fonts.ready.then(() => updateCharData()).catch(() => {});
+                        }
                         window.addEventListener('resize', handleResize);
                         window.addEventListener('pointermove', updateOnInput, { passive: true });
                         window.addEventListener('scroll', updateOnInput, { passive: true });
                         updateOnInput({ pageX: 0, pageY: 0 });
                 }
 
-                function teardown() {
+        function teardown() {
                         window.removeEventListener('resize', handleResize);
                         window.removeEventListener('pointermove', updateOnInput);
                         window.removeEventListener('scroll', updateOnInput);
+            if (layoutObserver) {
+                try { layoutObserver.disconnect(); } catch {}
+                layoutObserver = null;
+            }
                 }
 
-                function showPage(pageId) {
+        function showPage(pageId) {
                         document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
                         document.getElementById(pageId)?.classList.add('active');
                         teardown();
-                        if (pageId === 'mission1') initMission1();
+            if (pageId === 'mission1') initMission1();
                 }
 
                 document.addEventListener('DOMContentLoaded', () => {
