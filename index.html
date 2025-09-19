@@ -92,6 +92,90 @@
         .page.active {
             display: block;
         }
+
+        /* Leaderboard specific styles */
+        #leaderboard .main-content {
+            min-height: calc(100vh - 8rem);
+            padding: 2rem 0;
+        }
+
+        #leaderboard-table {
+            font-size: 0.9rem;
+        }
+
+        #leaderboard-table th {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        #leaderboard-table tbody tr:hover {
+            background: rgba(255,255,255,0.05);
+            transform: scale(1.005);
+        }
+
+        .rank-badge {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #leaderboard-table {
+                font-size: 0.8rem;
+            }
+            
+            #leaderboard-table th,
+            #leaderboard-table td {
+                padding: 0.5rem 0.25rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+        }
+
+        /* Floating Leaderboard Button Styles */
+        .leaderboard-btn { /* updated minimal style */
+            background: rgba(40,40,40,0.85);
+            color: #d4d4d4;
+            font-weight: 600;
+            padding: 0.85rem 1.1rem;
+            border-radius: 9999px;
+            border: 1px solid #2a2a2a;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 4px 10px -4px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04);
+            transition: background .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+        }
+
+        .leaderboard-btn:hover {
+            background: rgba(58,58,58,0.9);
+            color: #fff;
+            border-color: #3a3a3a;
+            box-shadow: 0 6px 14px -4px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06);
+        }
+
+        .leaderboard-btn:active {
+            transform: translateY(1px);
+            background: rgba(70,70,70,0.95);
+        }
+
+        .leaderboard-btn .icon {
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .leaderboard-btn .label { /* hide on very small screens */
+            display: none;
+        }
+
+        @media (min-width: 480px) { .leaderboard-btn .label { display: inline; } }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-300">
@@ -104,6 +188,14 @@
         <a class="nav-link" onclick="showPage('mission6')">Question 6</a>
         <a class="nav-link" onclick="showPage('mission7')">Question 7</a>
     </nav>
+
+    <!-- Floating Leaderboard Button -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button onclick="showPage('leaderboard')" class="leaderboard-btn" aria-label="Open Leaderboard">
+            <span class="icon" aria-hidden="true"></span>
+            <span class="label">LEADERBOARD</span>
+        </button>
+    </div>
 
     <div class="container">
         <div class="logo">
@@ -328,6 +420,50 @@
                         </div>
                 </div>
             </div>
+
+                        <!-- Leaderboard Page -->
+                        <div id="leaderboard" class="page">
+                            <div class="main-content">
+                                <div class="max-w-6xl mx-auto px-4 py-8">
+                                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-8 text-center"> Qualifier Round Leaderboard </h3>
+                                    
+                                    <div class="p-[1px] rounded-2xl bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_8px_30px_-10px_rgba(0,0,0,0.7)]">
+                                        <div class="rounded-2xl bg-neutral-950 border border-neutral-900/70 p-6 md:p-8">
+                                            <div class="mb-6 text-center">
+                                                <p class="text-gray-300 text-lg mb-2">Top CIA Operatives</p>
+                                                <p class="text-gray-500 text-sm">Ranked by total mission points earned</p>
+                                            </div>
+                                            
+                                            <div class="overflow-x-auto">
+                                                <table id="leaderboard-table" class="w-full text-left">
+                                                    <thead>
+                                                        <tr class="border-b border-neutral-800">
+                                                            <th class="py-3 px-4 text-white font-semibold">Rank</th>
+                                                            <th class="py-3 px-4 text-white font-semibold">Agent ID</th>
+                                                            <th class="py-3 px-4 text-white font-semibold">Team Members</th>
+                                                            <th class="py-3 px-4 text-white font-semibold text-center">Total Points</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="leaderboard-body">
+                                                        <!-- Leaderboard data will be populated by JavaScript -->
+                                                        <tr>
+                                                            <td colspan="4" class="py-8 text-center text-gray-500">
+                                                                <div class="animate-pulse">Loading classified data...</div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            
+                                            <div class="mt-6 text-center text-sm text-gray-500">
+                                                <p>🔒 Classified Intelligence Assessment Results</p>
+                                                <p>Only the most skilled operatives reach the top ranks</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Question 7: time travel instruction + SHA-256 hash -->
                         <div id="mission7" class="page">
@@ -557,6 +693,175 @@
                         document.getElementById(pageId)?.classList.add('active');
                         teardown();
             if (pageId === 'mission1') initMission1();
+            if (pageId === 'leaderboard') loadLeaderboard();
+                }
+
+                // Leaderboard functionality
+                async function loadLeaderboard() {
+                    try {
+                        const response = await fetch('leaderboard.csv');
+                        const csvText = await response.text();
+                        const data = parseCSV(csvText);
+                        displayLeaderboard(data);
+                    } catch (error) {
+                        console.error('Error loading leaderboard:', error);
+                        document.getElementById('leaderboard-body').innerHTML = `
+                            <tr>
+                                <td colspan="4" class="py-8 text-center text-red-400">
+                                    ⚠️ Error loading classified data. Check security clearance.
+                                </td>
+                            </tr>
+                        `;
+                    }
+                }
+
+                function parseCSV(csvText) {
+                    const lines = csvText.trim().split('\n');
+                    const headers = lines[0].split(',');
+                    const data = [];
+
+                    for (let i = 1; i < lines.length; i++) {
+                        const values = parseCSVLine(lines[i]);
+                        if (values.length >= 4) {
+                            const entry = {
+                                id: values[0],
+                                startTime: values[1],
+                                completionTime: values[2],
+                                totalPoints: parseInt(values[3]) || 0,
+                                studentEmail: values[6] || '',
+                                teamMembers: values[9] || ''
+                            };
+                            
+                            data.push(entry);
+                        }
+                    }
+
+                    // Sort by total points (descending) and then by completion time (ascending)
+                    return data.sort((a, b) => {
+                        if (b.totalPoints !== a.totalPoints) {
+                            return b.totalPoints - a.totalPoints;
+                        }
+                        return new Date(a.completionTime) - new Date(b.completionTime);
+                    });
+                }
+
+                function parseCSVLine(line) {
+                    const result = [];
+                    let current = '';
+                    let inQuotes = false;
+                    
+                    for (let i = 0; i < line.length; i++) {
+                        const char = line[i];
+                        
+                        if (char === '"') {
+                            inQuotes = !inQuotes;
+                        } else if (char === ',' && !inQuotes) {
+                            result.push(current.trim());
+                            current = '';
+                        } else {
+                            current += char;
+                        }
+                    }
+                    
+                    result.push(current.trim());
+                    return result;
+                }
+
+                function displayLeaderboard(data) {
+                    const tbody = document.getElementById('leaderboard-body');
+                    if (!tbody) return;
+
+                    if (data.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="4" class="py-8 text-center text-gray-500">
+                                    No mission data available
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    let currentRank = 1;
+                    let currentPoints = null;
+                    let currentRankCount = 0;
+
+                    tbody.innerHTML = data.map((entry, index) => {
+                        // Handle tied scores
+                        if (currentPoints !== entry.totalPoints) {
+                            currentRank = index + 1;
+                            currentPoints = entry.totalPoints;
+                        }
+
+                        const rankDisplay = getRankDisplay(currentRank);
+                        const agentId = formatAgentId(entry.studentEmail);
+                        const teamMembers = formatTeamMembers(entry.teamMembers);
+                        const pointsClass = getPointsClass(entry.totalPoints);
+
+                        return `
+                            <tr class="border-b border-neutral-800/50 hover:bg-neutral-900/30 transition-colors">
+                                <td class="py-3 px-4">
+                                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full ${getRankBadgeClass(currentRank)} text-sm font-bold">
+                                        ${rankDisplay}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="font-mono text-sm text-gray-300">${agentId}</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="text-xs text-gray-400">${teamMembers}</div>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-bold text-lg ${pointsClass}">${entry.totalPoints}</span>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+
+                function getRankDisplay(rank) {
+                    if (rank === 1) return '1';
+                    if (rank === 2) return '🥈';
+                    if (rank === 3) return '🥉';
+                    return rank;
+                }
+
+                function getRankBadgeClass(rank) {
+                    if (rank === 1) return 'bg-yellow-500 text-black';
+                    if (rank === 2) return 'bg-gray-400 text-black';
+                    if (rank === 3) return 'bg-amber-600 text-white';
+                    return 'bg-neutral-700 text-gray-300';
+                }
+
+                function formatAgentId(email) {
+                    if (!email) return 'CLASSIFIED';
+                    // Extract the ID part before @ symbol
+                    const id = email.split('@')[0];
+                    return id.toUpperCase();
+                }
+
+                function formatTeamMembers(teamMembers) {
+                    if (!teamMembers || teamMembers.trim() === '') return 'Solo Mission';
+                    
+                    const members = teamMembers.split(',').map(member => {
+                        const trimmed = member.trim();
+                        if (trimmed) {
+                            const id = trimmed.split('@')[0];
+                            return id.toUpperCase();
+                        }
+                        return '';
+                    }).filter(id => id);
+                    
+                    if (members.length === 0) return 'Solo Mission';
+                    return members.join(', ');
+                }
+
+                function getPointsClass(points) {
+                    if (points >= 50) return 'text-green-400';
+                    if (points >= 40) return 'text-blue-400';
+                    if (points >= 30) return 'text-yellow-400';
+                    if (points >= 20) return 'text-orange-400';
+                    return 'text-red-400';
                 }
 
                 document.addEventListener('DOMContentLoaded', () => {
