@@ -176,6 +176,64 @@
         }
 
         @media (min-width: 480px) { .leaderboard-btn .label { display: inline; } }
+        
+        /* Styles for leaderboard tabs */
+        .leaderboard-tab {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .leaderboard-tab.active {
+            background-color: rgba(64, 64, 64, 0.95) !important;
+            color: #fff;
+            box-shadow: 0 4px 10px -2px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        
+        .leaderboard-panel {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            pointer-events: none;
+        }
+        
+        .leaderboard-panel.active {
+            opacity: 1;
+            transform: translateY(0);
+            position: relative;
+            pointer-events: auto;
+        }
+        
+        .leaderboard-panel.hidden {
+            display: none;
+        }
+        
+        /* Common styles for both leaderboard panels */
+        #round1-leaderboard, #round2-leaderboard {
+            min-height: 520px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Ensure consistent box sizing for leaderboard panels */
+        .leaderboard-panel > div {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .leaderboard-panel > div > div {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .leaderboard-panel .overflow-x-auto {
+            flex: 1;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-300">
@@ -432,7 +490,7 @@
                         <div id="leaderboard" class="page">
                             <div class="main-content">
                                 <div class="max-w-6xl mx-auto px-4 py-8">
-                                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-2 text-center"> Qualifier Round Leaderboard </h3>
+                                    <h3 class="text-3xl md:text-4xl font-bold text-white mb-2 text-center">CIA Leaderboards</h3>
                                     <div class="flex justify-center mb-6">
                                         <span class="inline-flex items-center gap-2 text-[11px] uppercase tracking-wider font-semibold text-amber-300/80 bg-neutral-800/60 border border-neutral-700/60 px-3 py-1 rounded-full shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_4px_10px_-4px_rgba(0,0,0,0.6)]">
                                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-300"><path d="M3 12h18"/><path d="M12 3v18"/></svg>
@@ -440,28 +498,125 @@
                                         </span>
                                     </div>
                                     
+                                    <!-- Tabs for Round 1, Round 2, and Overall -->
+                                    <div class="flex justify-center mb-6">
+                                        <div class="inline-flex rounded-md shadow-sm" role="group">
+                                            <button id="round1-tab" type="button" class="leaderboard-tab active px-5 py-2.5 text-sm font-medium rounded-l-lg border border-neutral-700 bg-neutral-800 text-white hover:bg-neutral-700 focus:outline-none">
+                                                Round 1 - Qualifier
+                                            </button>
+                                            <button id="round2-tab" type="button" class="leaderboard-tab px-5 py-2.5 text-sm font-medium border-y border-neutral-700 bg-neutral-900 text-gray-300 hover:bg-neutral-700 hover:text-white focus:outline-none">
+                                                Round 2 - Kaggle
+                                            </button>
+                                            <button id="overall-tab" type="button" class="leaderboard-tab px-5 py-2.5 text-sm font-medium rounded-r-lg border border-neutral-700 bg-neutral-900 text-gray-300 hover:bg-neutral-700 hover:text-white focus:outline-none">
+                                                Overall Rankings
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Round 1 Leaderboard -->
+                                    <div id="round1-leaderboard" class="leaderboard-panel active">
+                                        <div class="p-[1px] rounded-2xl bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_8px_30px_-10px_rgba(0,0,0,0.7)]">
+                                            <div class="rounded-2xl bg-neutral-950 border border-neutral-900/70 p-6 md:p-8">
+                                                <div class="mb-6 text-center">
+                                                    <p class="text-gray-300 text-lg mb-2">Round 1: Qualifier Results</p>
+                                                    <p class="text-gray-500 text-sm">Top CIA Operatives ranked by mission points</p>
+                                                </div>
+                                                
+                                                <div class="overflow-x-auto">
+                                                    <table id="round1-table" class="w-full text-left">
+                                                        <thead>
+                                                            <tr class="border-b border-neutral-800">
+                                                                <th class="py-3 px-4 text-white font-semibold">Rank</th>
+                                                                <th class="py-3 px-4 text-white font-semibold">Agent ID</th>
+                                                                <th class="py-3 px-4 text-white font-semibold">Team Members</th>
+                                                                <th class="py-3 px-4 text-white font-semibold text-center">Total Points</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="round1-body">
+                                                            <!-- Round 1 leaderboard data will be populated by JavaScript -->
+                                                            <tr>
+                                                                <td colspan="4" class="py-8 text-center text-gray-500">
+                                                                    <div class="animate-pulse">Loading classified data...</div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="mt-6 text-center text-sm text-gray-500">
+                                                    <p>🔒 Classified Intelligence Assessment Results</p>
+                                                    <p>Only the most skilled operatives reach the top ranks</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Round 2 Leaderboard -->
+                                    <div id="round2-leaderboard" class="leaderboard-panel hidden">
+                                        <div class="p-[1px] rounded-2xl bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_8px_30px_-10px_rgba(0,0,0,0.7)]">
+                                            <div class="rounded-2xl bg-neutral-950 border border-neutral-900/70 p-6 md:p-8">
+                                                <div class="mb-6 text-center">
+                                                    <p class="text-gray-300 text-lg mb-2">Round 2: Kaggle Competition</p>
+                                                    <p class="text-gray-500 text-sm">Top performers in the Kaggle challenge</p>
+                                                </div>
+                                                
+                                                <div class="overflow-x-auto">
+                                                    <table id="round2-table" class="w-full text-left">
+                                                        <thead>
+                                                            <tr class="border-b border-neutral-800">
+                                                                <th class="py-3 px-4 text-white font-semibold">Rank</th>
+                                                                <th class="py-3 px-4 text-white font-semibold">Agent ID</th>
+                                                                <th class="py-3 px-4 text-white font-semibold">Team Members</th>
+                                                                <th class="py-3 px-4 text-white font-semibold text-center">Accuracy</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="round2-body">
+                                                            <!-- Round 2 leaderboard data will be populated by JavaScript -->
+                                                            <tr>
+                                                                <td colspan="4" class="py-8 text-center text-gray-500">
+                                                                    <div class="animate-pulse">Loading classified data...</div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="mt-6 text-center text-sm text-gray-500">
+                                                    <p>🏆 Kaggle Competition Results</p>
+                                                    <p>Exceptional analysis and problem-solving skills</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Overall Leaderboard -->
+                                <div id="overall-leaderboard" class="leaderboard-panel hidden">
                                     <div class="p-[1px] rounded-2xl bg-[linear-gradient(135deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] shadow-[0_0_0_1px_rgba(255,255,255,0.03),0_8px_30px_-10px_rgba(0,0,0,0.7)]">
                                         <div class="rounded-2xl bg-neutral-950 border border-neutral-900/70 p-6 md:p-8">
                                             <div class="mb-6 text-center">
-                                                <p class="text-gray-300 text-lg mb-2">Top CIA Operatives</p>
-                                                <p class="text-gray-500 text-sm">Ranked by total mission points earned</p>
+                                                <p class="text-gray-300 text-lg mb-2">Overall Top Performers</p>
+                                                <p class="text-gray-500 text-sm">Combined rankings from both rounds (Top 10)</p>
                                             </div>
                                             
                                             <div class="overflow-x-auto">
-                                                <table id="leaderboard-table" class="w-full text-left">
+                                                <table id="overall-table" class="w-full text-left">
                                                     <thead>
                                                         <tr class="border-b border-neutral-800">
                                                             <th class="py-3 px-4 text-white font-semibold">Rank</th>
                                                             <th class="py-3 px-4 text-white font-semibold">Agent ID</th>
                                                             <th class="py-3 px-4 text-white font-semibold">Team Members</th>
-                                                            <th class="py-3 px-4 text-white font-semibold text-center">Total Points</th>
+                                                            <th class="py-3 px-4 text-white font-semibold text-center">Round 1<br><span class="text-xs text-gray-400">(10 pts)</span></th>
+                                                            <th class="py-3 px-4 text-white font-semibold text-center">Round 2<br><span class="text-xs text-gray-400">(10 pts)</span></th>
+                                                            <th class="py-3 px-4 text-white font-semibold text-center">Round 3<br><span class="text-xs text-gray-400">(15 pts)</span></th>
+                                                            <th class="py-3 px-4 text-white font-semibold text-center">Total<br>Score</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody id="leaderboard-body">
-                                                        <!-- Leaderboard data will be populated by JavaScript -->
+                                                    <tbody id="overall-body">
+                                                        <!-- Overall leaderboard data will be populated by JavaScript -->
                                                         <tr>
-                                                            <td colspan="4" class="py-8 text-center text-gray-500">
-                                                                <div class="animate-pulse">Loading classified data...</div>
+                                                            <td colspan="6" class="py-8 text-center text-gray-500">
+                                                                <div class="animate-pulse">Loading combined rankings...</div>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -469,8 +624,8 @@
                                             </div>
                                             
                                             <div class="mt-6 text-center text-sm text-gray-500">
-                                                <p>🔒 Classified Intelligence Assessment Results</p>
-                                                <p>Only the most skilled operatives reach the top ranks</p>
+                                                <p>🏆 CIA Overall Performance Assessment</p>
+                                                <p>Top 10 operatives across all missions</p>
                                             </div>
                                         </div>
                                     </div>
@@ -706,19 +861,76 @@
                         document.getElementById(pageId)?.classList.add('active');
                         teardown();
             if (pageId === 'mission1') initMission1();
-            if (pageId === 'leaderboard') loadLeaderboard();
+            if (pageId === 'leaderboard') {
+                loadLeaderboard(); // Load Round 1 data
+                loadRound2Leaderboard(); // Load Round 2 data
+                setupLeaderboardTabs(); // Setup tab switching
+                
+                // Store the data globally for combined rankings
+                window.round1Data = [];
+                window.round2Data = [];
+            }
                 }
 
-                // Leaderboard functionality
+                // Setup leaderboard tabs
+                function setupLeaderboardTabs() {
+                    const round1Tab = document.getElementById('round1-tab');
+                    const round2Tab = document.getElementById('round2-tab');
+                    const overallTab = document.getElementById('overall-tab');
+                    const round1Panel = document.getElementById('round1-leaderboard');
+                    const round2Panel = document.getElementById('round2-leaderboard');
+                    const overallPanel = document.getElementById('overall-leaderboard');
+                    
+                    // Hide all panels and remove active states
+                    function resetTabs() {
+                        // Reset tab states
+                        [round1Tab, round2Tab, overallTab].forEach(tab => tab.classList.remove('active'));
+                        // Hide all panels
+                        [round1Panel, round2Panel, overallPanel].forEach(panel => {
+                            panel.classList.remove('active');
+                            panel.classList.add('hidden');
+                        });
+                    }
+                    
+                    if (round1Tab && round2Tab && overallTab) {
+                        round1Tab.addEventListener('click', () => {
+                            resetTabs();
+                            round1Tab.classList.add('active');
+                            round1Panel.classList.add('active');
+                            round1Panel.classList.remove('hidden');
+                        });
+                        
+                        round2Tab.addEventListener('click', () => {
+                            resetTabs();
+                            round2Tab.classList.add('active');
+                            round2Panel.classList.add('active');
+                            round2Panel.classList.remove('hidden');
+                        });
+                        
+                        overallTab.addEventListener('click', () => {
+                            resetTabs();
+                            overallTab.classList.add('active');
+                            overallPanel.classList.add('active');
+                            overallPanel.classList.remove('hidden');
+                            
+                            // Generate overall leaderboard data when this tab is clicked
+                            generateOverallLeaderboard();
+                        });
+                    }
+                }
+                
+                // Round 1 Leaderboard functionality
                 async function loadLeaderboard() {
                     try {
                         const response = await fetch('leaderboard.csv');
                         const csvText = await response.text();
                         const data = parseCSV(csvText);
-                        displayLeaderboard(data);
+                        displayLeaderboard(data, 'round1-body');
+                        // Store the data for combined rankings
+                        window.round1Data = data;
                     } catch (error) {
-                        console.error('Error loading leaderboard:', error);
-                        document.getElementById('leaderboard-body').innerHTML = `
+                        console.error('Error loading Round 1 leaderboard:', error);
+                        document.getElementById('round1-body').innerHTML = `
                             <tr>
                                 <td colspan="4" class="py-8 text-center text-red-400">
                                     ⚠️ Error loading classified data. Check security clearance.
@@ -726,6 +938,52 @@
                             </tr>
                         `;
                     }
+                }
+                
+                // Round 2 Leaderboard functionality
+                async function loadRound2Leaderboard() {
+                    try {
+                        const response = await fetch('Round2kaggle.csv');
+                        const csvText = await response.text();
+                        const data = parseRound2CSV(csvText);
+                        displayRound2Leaderboard(data);
+                        // Store the data for combined rankings
+                        window.round2Data = data;
+                    } catch (error) {
+                        console.error('Error loading Round 2 leaderboard:', error);
+                        document.getElementById('round2-body').innerHTML = `
+                            <tr>
+                                <td colspan="4" class="py-8 text-center text-red-400">
+                                    ⚠️ Error loading Kaggle data. Check security clearance.
+                                </td>
+                            </tr>
+                        `;
+                    }
+                }
+                
+                // Parse Round 2 CSV data
+                function parseRound2CSV(csvText) {
+                    const lines = csvText.trim().split('\n');
+                    const data = [];
+                    
+                    // Skip header row
+                    for (let i = 1; i < lines.length; i++) {
+                        // Skip empty lines
+                        if (!lines[i].trim()) continue;
+                        
+                        const values = lines[i].split(',').map(val => val.trim());
+                        if (values.length >= 3) {
+                            const entry = {
+                                rank: values[0],
+                                studentEmail: values[1],
+                                teamMembers: values[2] || '',
+                                accuracy: values[3] || 'N/A'
+                            };
+                            data.push(entry);
+                        }
+                    }
+                    
+                    return data;
                 }
 
                 function parseCSV(csvText) {
@@ -780,8 +1038,8 @@
                     return result;
                 }
 
-                function displayLeaderboard(data) {
-                    const tbody = document.getElementById('leaderboard-body');
+                function displayLeaderboard(data, tbodyId) {
+                    const tbody = document.getElementById(tbodyId || 'round1-body');
                     if (!tbody) return;
 
                     if (data.length === 0) {
@@ -831,6 +1089,48 @@
                         `;
                     }).join('');
                 }
+                
+                // Display Round 2 Leaderboard
+                function displayRound2Leaderboard(data) {
+                    const tbody = document.getElementById('round2-body');
+                    if (!tbody) return;
+                    
+                    if (data.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="4" class="py-8 text-center text-gray-500">
+                                    No Kaggle competition data available
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    tbody.innerHTML = data.map((entry) => {
+                        const agentId = formatAgentId(entry.studentEmail);
+                        const teamMembers = entry.teamMembers ? formatAgentId(entry.teamMembers) : 'Solo Mission';
+                        const accuracyClass = entry.accuracy >= 0.97 ? 'text-green-400' : entry.accuracy >= 0.96 ? 'text-blue-400' : 'text-yellow-400';
+                        
+                        return `
+                            <tr class="border-b border-neutral-800/50 hover:bg-neutral-900/30 transition-colors">
+                                <td class="py-3 px-4">
+                                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full ${getRankBadgeClass(entry.rank)} text-sm font-bold">
+                                        ${entry.rank}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="font-mono text-sm text-gray-300">${agentId}</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="text-xs text-gray-400">${teamMembers}</div>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-bold text-lg ${accuracyClass}">${entry.accuracy}</span>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
 
                 function getRankDisplay(rank) {
                     if (rank === 1) return '1';
@@ -875,6 +1175,198 @@
                     if (points >= 30) return 'text-yellow-400';
                     if (points >= 20) return 'text-orange-400';
                     return 'text-red-400';
+                }
+                
+                // Generate the overall leaderboard combining both rounds
+                function generateOverallLeaderboard() {
+                    const round1Data = window.round1Data || [];
+                    const round2Data = window.round2Data || [];
+                    
+                    if (!round1Data.length || !round2Data.length) {
+                        document.getElementById('overall-body').innerHTML = `
+                            <tr>
+                                <td colspan="7" class="py-8 text-center text-yellow-400">
+                                    ⚠️ Waiting for data from both rounds. Please ensure both datasets are loaded.
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    // Create a combined leaderboard
+                    const combinedData = {};
+                    
+                    // Process Round 1 data - normalize to 10 points max
+                    round1Data.forEach(entry => {
+                        const email = entry.studentEmail.toLowerCase();
+                        if (!combinedData[email]) {
+                            combinedData[email] = {
+                                studentEmail: entry.studentEmail,
+                                teamMembers: entry.teamMembers,
+                                round1Points: 0,
+                                round1RawPoints: 0,
+                                round2Points: 0,
+                                round2RawPoints: 0,
+                                round2Accuracy: 'N/A',
+                                totalPoints: 0
+                            };
+                        }
+                        
+                        // Store raw points for display
+                        combinedData[email].round1RawPoints = entry.totalPoints;
+                        
+                        // Normalize Round 1 points to 10 max
+                        // Assuming 50 is max in round 1
+                        const normalizedPoints = (entry.totalPoints / 50) * 10;
+                        combinedData[email].round1Points = normalizedPoints;
+                        combinedData[email].totalPoints += normalizedPoints;
+                    });
+                    
+                    // Process Round 2 data - normalize to 10 points max
+                    round2Data.forEach(entry => {
+                        const email = entry.studentEmail.toLowerCase();
+                        if (!combinedData[email]) {
+                            combinedData[email] = {
+                                studentEmail: entry.studentEmail,
+                                teamMembers: '',
+                                round1Points: 0,
+                                round1RawPoints: 0,
+                                round2Points: 0,
+                                round2RawPoints: 0,
+                                round2Accuracy: 'N/A',
+                                totalPoints: 0
+                            };
+                        }
+                        
+                        // Store accuracy for display
+                        combinedData[email].round2Accuracy = entry.accuracy;
+                        
+                        // Calculate points based on rank - normalize to 10 points max
+                        // Rank 1: 10 points, Rank 2: 9 points, etc.
+                        const rankPoints = 11 - parseInt(entry.rank);
+                        const normalizedPoints = Math.max(rankPoints, 0); // Ensure no negative points
+                        
+                        combinedData[email].round2Points = normalizedPoints;
+                        combinedData[email].totalPoints += normalizedPoints;
+                        
+                        // If this entry has team members, update those too
+                        if (entry.teamMembers) {
+                            const teamEmail = entry.teamMembers.toLowerCase();
+                            if (!combinedData[teamEmail]) {
+                                combinedData[teamEmail] = {
+                                    studentEmail: entry.teamMembers,
+                                    teamMembers: entry.studentEmail,
+                                    round1Points: 0,
+                                    round1RawPoints: 0,
+                                    round2Points: 0,
+                                    round2RawPoints: 0,
+                                    round2Accuracy: 'N/A',
+                                    totalPoints: 0
+                                };
+                            }
+                            combinedData[teamEmail].round2Points = normalizedPoints;
+                            combinedData[teamEmail].round2Accuracy = entry.accuracy;
+                            combinedData[teamEmail].totalPoints += normalizedPoints;
+                        }
+                    });
+                    
+                    // Convert to array and sort by total points
+                    const overallRankings = Object.values(combinedData).sort((a, b) => 
+                        b.totalPoints - a.totalPoints
+                    );
+                    
+                    // Display only top 10
+                    const top10 = overallRankings.slice(0, 10);
+                    
+                    // Display the overall leaderboard
+                    displayOverallLeaderboard(top10);
+                }
+                
+                // Display the overall leaderboard
+                function displayOverallLeaderboard(data) {
+                    const tbody = document.getElementById('overall-body');
+                    if (!tbody) return;
+                    
+                    if (data.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="7" class="py-8 text-center text-gray-500">
+                                    No combined ranking data available
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+                    
+                    // Implement dense ranking - same score gets same rank
+                    let currentRank = 1;
+                    let currentScore = null;
+                    
+                    tbody.innerHTML = data.map((entry, index) => {
+                        // Apply dense ranking
+                        if (index === 0 || entry.totalPoints !== currentScore) {
+                            currentRank = index + 1;
+                            currentScore = entry.totalPoints;
+                        }
+                        
+                        const rank = currentRank;
+                        const agentId = formatAgentId(entry.studentEmail);
+                        const teamMembers = entry.teamMembers ? formatAgentId(entry.teamMembers) : 'Solo Mission';
+                        
+                        // Format points for display
+                        const round1PointsDisplay = entry.round1Points.toFixed(2);
+                        const round2PointsDisplay = entry.round2Points.toFixed(2);
+                        const totalPointsDisplay = entry.totalPoints.toFixed(2);
+                        
+                        // CSS classes for points
+                        const pointsClass = getTotalPointsClass(entry.totalPoints);
+                        
+                        return `
+                            <tr class="border-b border-neutral-800/50 hover:bg-neutral-900/30 transition-colors">
+                                <td class="py-3 px-4">
+                                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-full ${getRankBadgeClass(rank)} text-sm font-bold">
+                                        ${getRankDisplay(rank)}
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="font-mono text-sm text-gray-300">${agentId}</div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="text-xs text-gray-400">${teamMembers}</div>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <div class="text-sm text-blue-400">
+                                        ${entry.round1RawPoints ? `<span class="font-bold">${round1PointsDisplay}</span> <span class="text-gray-500 text-xs">(${entry.round1RawPoints}pts)</span>` : '-'}
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <div class="text-sm text-green-400">
+                                        ${entry.round2Points ? 
+                                            `<span class="font-bold">${round2PointsDisplay}</span> ${entry.round2Accuracy && entry.round2Accuracy !== 'N/A' ? 
+                                                `<span class="text-gray-500 text-xs">(${entry.round2Accuracy})</span>` : 
+                                                ''}` : 
+                                            '-'}
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <div class="text-sm text-purple-400">
+                                        <span class="text-gray-500">Coming soon</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4 text-center">
+                                    <span class="font-bold text-lg ${pointsClass}">${totalPointsDisplay}</span>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+                
+                // Get CSS class for overall points
+                function getTotalPointsClass(points) {
+                    if (points >= 15) return 'text-green-400';
+                    if (points >= 10) return 'text-blue-400';
+                    if (points >= 5) return 'text-yellow-400';
+                    return 'text-orange-400';
                 }
 
                 document.addEventListener('DOMContentLoaded', () => {
